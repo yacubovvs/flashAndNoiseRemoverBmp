@@ -41,5 +41,11 @@ static unsigned char  read_u8(FILE* fp);
 static BITMAPFILEHEADER readHeader(FILE* pFile);
 static BITMAPINFOHEADER readBmiHeader(FILE* pFile);
 static void writeHeader(BITMAPFILEHEADER bmiHeader, FILE* pFile);
+static void writeHeader(BITMAPINFOHEADER header, FILE* pFile);
+
+static void write_u8(FILE* fp, unsigned char val);
+static void write_u16(FILE* fp, unsigned short val);
+static void write_u32(FILE* fp, unsigned int val);
+static void write_s32(FILE* fp, int val);
 
 #endif // MAIN_H_INCLUDEDs

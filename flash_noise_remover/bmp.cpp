@@ -78,26 +78,54 @@ static BITMAPINFOHEADER readBmiHeader(FILE* pFile) {
 }
 
 
-static void writeHeader(BITMAPFILEHEADER bmiHeader, FILE* pFile) {
-    putc(bmiHeader.bfType, pFile); 
-    putc(bmiHeader.bfSize, pFile);
-    putc(bmiHeader.bfReserved1, pFile);
-    putc(bmiHeader.bfReserved2, pFile);
-    putc(bmiHeader.bfOffBits, pFile);
+static void writeHeader(BITMAPFILEHEADER header, FILE* pFile) {
+    write_u16(pFile, header.bfType);
+    write_u32(pFile, header.bfSize);
+    write_u16(pFile, header.bfReserved1);
+    write_u16(pFile, header.bfReserved2);
+    write_u32(pFile, header.bfOffBits);
 
-   // putc(BITMAPFILEHEADER, pFile);
+    // putc(BITMAPFILEHEADER, pFile);
 }
 
 static void writeHeader(BITMAPINFOHEADER header, FILE* pFile) {
-    putc(header.biSize, pFile);
-    putc(header.biWidth, pFile);
-    putc(header.biHeight, pFile);
-    putc(header.biPlanes, pFile);
-    putc(header.biBitCount, pFile);
-    putc(header.biCompression, pFile);
-    putc(header.biSizeImage, pFile);
-    putc(header.biXPelsPerMeter, pFile);
-    putc(header.biYPelsPerMeter, pFile);
-    putc(header.biClrUsed, pFile);
-    putc(header.biClrImportant, pFile);
+    write_u32(pFile, header.biSize);
+    write_s32(pFile, header.biWidth);
+    write_s32(pFile, header.biHeight);
+    write_u16(pFile, header.biPlanes);
+    write_u16(pFile, header.biBitCount);
+    write_u32(pFile, header.biCompression);
+    write_u32(pFile, header.biSizeImage);
+    write_s32(pFile, header.biXPelsPerMeter);
+    write_s32(pFile, header.biYPelsPerMeter);
+    write_u32(pFile, header.biClrUsed);
+    write_u32(pFile, header.biClrImportant);
+}
+
+static void write_u8(FILE* fp, unsigned char val) {
+    putc(char(val), fp);
+}
+
+
+static void write_u16(FILE* fp, unsigned short val)
+{
+    putc(char(val), fp);
+    putc(char(val >> 8), fp);
+}
+
+static void write_u32(FILE* fp, unsigned int val)
+{
+    putc(char(val), fp);
+    putc(char(val >> 8), fp);
+    putc(char(val >> 16), fp);
+    putc(char(val >> 24), fp);
+}
+
+
+static void write_s32(FILE* fp, int val)
+{
+    putc(char(val), fp);
+    putc(char(val >> 8), fp);
+    putc(char(val >> 16), fp);
+    putc(char(val >> 24), fp);
 }
